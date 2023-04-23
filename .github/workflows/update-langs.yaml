@@ -5,7 +5,7 @@ on:
 
 jobs:
   updateLanguages:
-    if: github.repository == 'anuraghazra/github-readme-stats'
+    if: github.repository == 'codenificient/github-readme-stats'
     name: Update supported languages
     runs-on: ubuntu-latest
     strategy:
