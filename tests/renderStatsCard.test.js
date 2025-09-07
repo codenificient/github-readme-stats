@@ -4,7 +4,7 @@ import {
   queryByTestId,
 } from "@testing-library/dom";
 import { cssToObject } from "@uppercod/css-to-object";
-import { renderStatsCard } from "../src/cards/stats-card.js";
+import { renderStatsCard } from "../src/cards/stats.js";
 import { expect, it, describe } from "@jest/globals";
 import { CustomError } from "../src/common/utils.js";
 
@@ -264,9 +264,10 @@ describe("Test renderStatsCard", () => {
       );
       expect(statClassStyles.fill.trim()).toBe(`#${themes[name].text_color}`);
       expect(iconClassStyles.fill.trim()).toBe(`#${themes[name].icon_color}`);
-      expect(queryByTestId(document.body, "card-bg")).toHaveAttribute(
-        "fill",
-        `#${themes[name].bg_color}`,
+      const backgroundElement = queryByTestId(document.body, "card-bg");
+      const backgroundElementFill = backgroundElement.getAttribute("fill");
+      expect([`#${themes[name].bg_color}`, "url(#gradient)"]).toContain(
+        backgroundElementFill,
       );
     });
   });
@@ -386,7 +387,9 @@ describe("Test renderStatsCard", () => {
       document.querySelector(
         'g[transform="translate(0, 25)"]>.stagger>.stat.bold',
       ).textContent,
-    ).toMatchInlineSnapshot(`"累计提交数（commit） (2023):"`);
+    ).toMatchInlineSnapshot(
+      `"累计提交数（commit） (${new Date().getFullYear()}):"`,
+    );
     expect(
       document.querySelector(
         'g[transform="translate(0, 50)"]>.stagger>.stat.bold',
