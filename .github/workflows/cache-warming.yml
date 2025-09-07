@@ -1,0 +1,37 @@
+name: Daily Cache Warming
+on:
+  schedule:
+    # Run daily at 6 AM UTC to warm the cache
+    - cron: "0 6 * * *"
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  warm-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Warm GitHub Stats Cache
+        run: |
+          echo "🔥 Warming GitHub stats cache..."
+          curl -s "https://github-readme-stat-codenificient.vercel.app/api?username=codenificient&show_icons=true&theme=tokyonight&count_private=true&include_all_commits=true&cache_seconds=86400" > /dev/null
+          echo "✅ GitHub stats cache warmed"
+
+      - name: Warm Top Languages Cache
+        run: |
+          echo "🔥 Warming top languages cache..."
+          curl -s "https://github-readme-stat-codenificient.vercel.app/api/top-langs/?username=codenificient&langs_count=4&theme=tokyonight&cache_seconds=86400" > /dev/null
+          curl -s "https://github-readme-stat-codenificient.vercel.app/api/top-langs/?username=codenificient&langs_count=14&theme=tokyonight&cache_seconds=86400" > /dev/null
+          echo "✅ Top languages cache warmed"
+
+      - name: Warm WakaTime Cache
+        run: |
+          echo "🔥 Warming WakaTime cache..."
+          curl -s "https://github-readme-stat-codenificient.vercel.app/api/wakatime?username=codenificient&theme=tokyonight&langs_count=20&cache_seconds=86400" > /dev/null
+          echo "✅ WakaTime cache warmed"
+
+      - name: Cache Warming Complete
+        run: |
+          echo "🎉 All caches warmed successfully!"
+          echo "Your GitHub profile stats will now show fresh data for the next 24 hours."
