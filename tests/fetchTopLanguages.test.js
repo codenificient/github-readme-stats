@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { fetchTopLanguages } from "../src/fetchers/top-languages-fetcher.js";
+import { fetchTopLanguages } from "../src/fetchers/top-languages.js";
 import { expect, it, describe, afterEach } from "@jest/globals";
 
 const mock = new MockAdapter(axios);
@@ -165,7 +165,7 @@ describe("FetchTopLanguages", () => {
     });
 
     await expect(fetchTopLanguages("anuraghazra")).rejects.toThrow(
-      "Something went while trying to retrieve the language data using the GraphQL API.",
+      "Something went wrong while trying to retrieve the language data using the GraphQL API.",
     );
   });
 });

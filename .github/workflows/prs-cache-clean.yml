@@ -22,9 +22,6 @@ jobs:
   cleanup:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
-
       - name: Cleanup
         run: |
           gh extension install actions/gh-actions-cache
@@ -44,4 +41,4 @@ jobs:
           done
           echo "Done"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TOKEN }}

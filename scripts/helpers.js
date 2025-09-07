@@ -4,7 +4,7 @@
 
 import { getInput } from "@actions/core";
 
-const OWNER = "anuraghazra";
+const OWNER = "codenificient";
 const REPO = "github-readme-stats";
 
 /**
@@ -20,6 +20,9 @@ export const getRepoInfo = (ctx) => {
       repo: ctx.repo.repo,
     };
   } catch (error) {
+    // Resolve eslint no-unused-vars
+    error;
+
     return {
       owner: OWNER,
       repo: REPO,
