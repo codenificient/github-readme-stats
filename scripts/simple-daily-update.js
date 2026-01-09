@@ -13,10 +13,10 @@
  * node scripts/simple-daily-update.js
  */
 
-import fs from 'fs';
-import https from 'https';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'fs'
+import https from 'https'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,8 +27,8 @@ const CONFIG = {
   wakatimeUsername: process.env.WAKATIME_USERNAME || 'codenificient',
   outputDir: path.join(__dirname, '../generated-cards'),
   // Card URLs - you can customize these
-  githubCardUrl: `https://github-readme-stats.vercel.app/api?username=${process.env.GITHUB_USERNAME || 'codenificient'}&theme=dark&show_icons=true&hide_border=true`,
-  wakatimeCardUrl: `https://github-readme-stats.vercel.app/api/wakatime?username=${process.env.WAKATIME_USERNAME || 'codenificient'}&theme=dark&hide_border=true`,
+  githubCardUrl: `https://github-readme-stat-codenificient.vercel.app/api?username=${process.env.GITHUB_USERNAME || 'codenificient'}&theme=dark&show_icons=true&hide_border=true`,
+  wakatimeCardUrl: `https://github-readme-stat-codenificient.vercel.app/api/wakatime?username=${process.env.WAKATIME_USERNAME || 'codenificient'}&theme=dark&hide_border=true`,
 };
 
 /**
