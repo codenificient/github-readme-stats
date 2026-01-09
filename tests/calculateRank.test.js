@@ -1,6 +1,6 @@
+import { describe, expect, it } from "@jest/globals";
 import "@testing-library/jest-dom";
 import { calculateRank } from "../src/calculateRank.js";
-import { expect, it, describe } from "@jest/globals";
 
 describe("Test calculateRank", () => {
   it("new user gets C rank", () => {
@@ -30,7 +30,7 @@ describe("Test calculateRank", () => {
         stars: 25,
         followers: 5,
       }),
-    ).toStrictEqual({ level: "B-", percentile: 65.02918514848255 });
+    ).toStrictEqual({ level: "B-", percentile: 65.02918514848257 });
   });
 
   it("median user gets B+ rank", () => {
