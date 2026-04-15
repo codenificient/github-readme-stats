@@ -9,11 +9,19 @@ import express from "express";
 const app = express();
 const router = express.Router();
 
+// Health check for Docker / Coolify
+router.get("/health", (_req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 router.get("/", statsCard);
 router.get("/pin", repoCard);
 router.get("/top-langs", langCard);
 router.get("/wakatime", wakatimeCard);
 router.get("/gist", gistCard);
+
+// Serve static frontend (landing page) from /public
+app.use(express.static("public"));
 
 app.use("/api", router);
 
