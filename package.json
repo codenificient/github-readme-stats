@@ -10,7 +10,7 @@
   ],
   "main": "src/index.js",
   "type": "module",
-  "homepage": "https://github.com/codenificient/github-readme-stats",
+  "homepage": "https://github-readme-stats.tioye.dev",
   "bugs": {
     "url": "https://github.com/codenificient/github-readme-stats/issues"
   },
