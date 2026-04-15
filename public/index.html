@@ -9,9 +9,28 @@
       name="description"
       content="Dynamically generated GitHub stats cards for your README. Try the live demo, customize themes, and embed them in your profile."
     />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E"
+    />
+    <script>
+      // Set theme before first paint to avoid flash of incorrect theme.
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var systemDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          var theme = stored || (systemDark ? "dark" : "light");
+          document.documentElement.dataset.theme = theme;
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
     <style>
-      :root {
+      :root,
+      :root[data-theme="dark"] {
         --bg: #0d1117;
         --bg-elev: #161b22;
         --bg-elev-2: #1c2128;
@@ -24,27 +43,33 @@
         --accent-glow: rgba(47, 129, 247, 0.35);
         --success: #3fb950;
         --radius: 10px;
-        --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-          system-ui, "Helvetica Neue", Arial, sans-serif;
-        --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code",
-          Menlo, Consolas, monospace;
+        --font:
+          "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+          "Helvetica Neue", Arial, sans-serif;
+        --mono:
+          ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo,
+          Consolas, monospace;
       }
-      @media (prefers-color-scheme: light) {
-        :root {
-          --bg: #ffffff;
-          --bg-elev: #f6f8fa;
-          --bg-elev-2: #eaeef2;
-          --border: #d0d7de;
-          --border-strong: #afb8c1;
-          --text: #1f2328;
-          --text-muted: #59636e;
-          --accent: #0969da;
-          --accent-2: #8250df;
-          --accent-glow: rgba(9, 105, 218, 0.25);
-        }
+      :root[data-theme="light"] {
+        --bg: #ffffff;
+        --bg-elev: #f6f8fa;
+        --bg-elev-2: #eaeef2;
+        --border: #d0d7de;
+        --border-strong: #afb8c1;
+        --text: #1f2328;
+        --text-muted: #59636e;
+        --accent: #0969da;
+        --accent-2: #8250df;
+        --accent-glow: rgba(9, 105, 218, 0.25);
       }
-      * { box-sizing: border-box; }
-      html, body { margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
       body {
         font-family: var(--font);
         background: var(--bg);
@@ -53,11 +78,24 @@
         -webkit-font-smoothing: antialiased;
         min-height: 100vh;
         background-image:
-          radial-gradient(800px 400px at 80% -10%, var(--accent-glow), transparent 70%),
-          radial-gradient(700px 400px at -10% 10%, rgba(163, 113, 247, 0.18), transparent 70%);
+          radial-gradient(
+            800px 400px at 80% -10%,
+            var(--accent-glow),
+            transparent 70%
+          ),
+          radial-gradient(
+            700px 400px at -10% 10%,
+            rgba(163, 113, 247, 0.18),
+            transparent 70%
+          );
       }
-      a { color: var(--accent); text-decoration: none; }
-      a:hover { text-decoration: underline; }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
 
       .container {
         max-width: 1100px;
@@ -82,9 +120,15 @@
         letter-spacing: -0.01em;
       }
       .logo .dot {
-        width: 10px; height: 10px; border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
         background: linear-gradient(135deg, var(--accent), var(--accent-2));
         box-shadow: 0 0 12px var(--accent-glow);
+      }
+      nav.site {
+        display: flex;
+        align-items: center;
       }
       nav.site a {
         color: var(--text-muted);
@@ -92,9 +136,55 @@
         margin-left: 18px;
         font-weight: 500;
       }
-      nav.site a:hover { color: var(--text); text-decoration: none; }
+      nav.site a:hover {
+        color: var(--text);
+        text-decoration: none;
+      }
 
-      .hero { padding: 72px 0 32px; text-align: center; }
+      .theme-toggle {
+        margin-left: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0;
+        transition:
+          color 0.15s,
+          border-color 0.15s,
+          background 0.15s;
+      }
+      .theme-toggle:hover {
+        color: var(--text);
+        border-color: var(--border-strong);
+        background: var(--bg-elev-2);
+      }
+      .theme-toggle .icon {
+        width: 16px;
+        height: 16px;
+      }
+      .theme-toggle .sun {
+        display: none;
+      }
+      .theme-toggle .moon {
+        display: block;
+      }
+      :root[data-theme="light"] .theme-toggle .sun {
+        display: block;
+      }
+      :root[data-theme="light"] .theme-toggle .moon {
+        display: none;
+      }
+
+      .hero {
+        padding: 72px 0 32px;
+        text-align: center;
+      }
       .hero .pill {
         display: inline-block;
         font-size: 12px;
@@ -141,19 +231,32 @@
         font-size: 14px;
         font-weight: 500;
         cursor: pointer;
-        transition: border-color 0.15s, background 0.15s, transform 0.1s;
+        transition:
+          border-color 0.15s,
+          background 0.15s,
+          transform 0.1s;
       }
-      .btn:hover { border-color: var(--border-strong); background: var(--bg-elev-2); text-decoration: none; }
-      .btn:active { transform: translateY(1px); }
+      .btn:hover {
+        border-color: var(--border-strong);
+        background: var(--bg-elev-2);
+        text-decoration: none;
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
       .btn.primary {
         background: linear-gradient(180deg, var(--accent), #1f6feb);
         border-color: transparent;
         color: #fff;
         box-shadow: 0 4px 14px var(--accent-glow);
       }
-      .btn.primary:hover { filter: brightness(1.08); }
+      .btn.primary:hover {
+        filter: brightness(1.08);
+      }
 
-      section { padding: 48px 0; }
+      section {
+        padding: 48px 0;
+      }
       section h2 {
         font-size: 24px;
         font-weight: 600;
@@ -178,10 +281,16 @@
         gap: 20px;
       }
       @media (max-width: 820px) {
-        .demo-grid { grid-template-columns: 1fr; }
+        .demo-grid {
+          grid-template-columns: 1fr;
+        }
       }
-      .controls { padding: 20px; }
-      .controls .field { margin-bottom: 14px; }
+      .controls {
+        padding: 20px;
+      }
+      .controls .field {
+        margin-bottom: 14px;
+      }
       .controls label {
         display: block;
         font-size: 12px;
@@ -201,7 +310,9 @@
         color: var(--text);
         font-family: inherit;
         font-size: 14px;
-        transition: border-color 0.15s, box-shadow 0.15s;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
       }
       .controls input:focus,
       .controls select:focus {
@@ -238,7 +349,10 @@
         color: var(--text-muted);
         word-break: break-all;
       }
-      .preview .url strong { color: var(--text); font-weight: 500; }
+      .preview .url strong {
+        color: var(--text);
+        font-weight: 500;
+      }
       .copy-btn {
         margin-top: 8px;
         font-size: 12px;
@@ -255,7 +369,9 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        transition: border-color 0.15s, transform 0.15s;
+        transition:
+          border-color 0.15s,
+          transform 0.15s;
       }
       .example:hover {
         border-color: var(--border-strong);
@@ -268,7 +384,11 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
-      .example img { width: 100%; height: auto; border-radius: 6px; }
+      .example img {
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+      }
 
       footer.site {
         margin-top: 40px;
@@ -282,7 +402,10 @@
         gap: 12px;
       }
 
-      .icon { width: 16px; height: 16px; }
+      .icon {
+        width: 16px;
+        height: 16px;
+      }
     </style>
   </head>
   <body>
@@ -301,6 +424,41 @@
             rel="noopener"
             >GitHub</a
           >
+          <button
+            type="button"
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Toggle color theme"
+            title="Toggle theme"
+          >
+            <svg
+              class="icon sun"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+              />
+            </svg>
+            <svg
+              class="icon moon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </button>
         </nav>
       </header>
 
@@ -308,14 +466,12 @@
         <span class="pill">Self-hosted on Coolify</span>
         <h1>Dynamic GitHub stat cards<br />for your README.</h1>
         <p>
-          Generate beautiful, customizable cards showing your contributions,
-          top languages, pinned repos, and more. Drop them into any README
-          with a single image tag.
+          Generate beautiful, customizable cards showing your contributions, top
+          languages, pinned repos, and more. Drop them into any README with a
+          single image tag.
         </p>
         <div class="cta">
-          <a class="btn primary" href="#demo">
-            Try it live
-          </a>
+          <a class="btn primary" href="#demo"> Try it live </a>
           <a
             class="btn"
             href="https://github.com/codenificient/github-readme-stats"
@@ -471,6 +627,19 @@
       const previewUrl = $("previewUrl");
       const copyBtn = $("copyBtn");
       const repoField = $("repoField");
+      const themeToggle = $("themeToggle");
+
+      themeToggle.addEventListener("click", () => {
+        const current =
+          document.documentElement.dataset.theme === "light" ? "light" : "dark";
+        const next = current === "light" ? "dark" : "light";
+        document.documentElement.dataset.theme = next;
+        try {
+          localStorage.setItem("theme", next);
+        } catch (e) {
+          // Ignore localStorage failures (private mode, etc.)
+        }
+      });
 
       function buildUrl() {
         const username = $("username").value.trim() || "codenificient";
