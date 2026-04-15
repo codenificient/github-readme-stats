@@ -12,8 +12,9 @@ WORKDIR /app
 # Copy package files first for better layer caching
 COPY --chown=nodejs:nodejs package.json package-lock.json ./
 
+ENV HUSKY=0
 # Install production deps only. Fall back to install if ci fails (e.g. lockfile drift).
-RUN npm ci --omit=dev || npm install --omit=dev
+RUN npm ci --omit=dev --ignore-scripts || npm install --omit=dev --ignore-scripts
 
 # Copy the rest of the app
 COPY --chown=nodejs:nodejs . .
