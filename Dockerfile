@@ -1,4 +1,5 @@
-FROM node:22-alpine
+FROM public.ecr.aws/docker/library/node:22-alpine
+
 
 # Install wget for healthcheck
 RUN apk add --no-cache wget
